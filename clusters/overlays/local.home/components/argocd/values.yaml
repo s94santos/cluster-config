@@ -18,9 +18,9 @@ configs:
 
 server:
   ingress:
-    enabled: false
+    enabled: true
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt-production
+      cert-manager.io/issuer: letsencrypt-production
     ingressClassName: nginx
     hosts:
       - argocd.cloudstaging.cc
