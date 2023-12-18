@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bootstrap
+spec:
+  generators:
+  - list:
+      elements:
+      - app: argocd
+        path: clusters/overlays/local.home/components/argocd
+  template:
+    metadata:
+      name: '{{app}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/s94santos/cluster-config.git
+        targetRevision: refactor
+        path: '{{path}}'
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: argocd
+
