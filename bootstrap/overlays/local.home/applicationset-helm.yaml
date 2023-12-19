@@ -11,6 +11,11 @@ spec:
           url: https://argoproj.github.io/argo-helm
           chart: argo-cd
           targetRevision: 5.51.6
+        - appName: vaultwarden
+          namespace: default
+          url: https://k8s-at-home.com/charts/
+          chart: vaultwarden
+          targetRevision: 5.3.2
   template:
     metadata:
       name: "{{appName}}"

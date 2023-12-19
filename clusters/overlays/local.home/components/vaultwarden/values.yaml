@@ -1,0 +1,54 @@
+
+image:
+  repository: vaultwarden/server
+  pullPolicy: IfNotPresent
+# @default -- chart.appVersion
+  tag: 1.28.1
+
+strategy:
+  type: Recreate
+
+env:
+  DATA_FOLDER: "config"
+
+service:
+  main:
+    ports:
+      http:
+        port: 80
+      websocket:
+        enabled: true
+        port: 3012
+
+ingress:
+  main:
+    annotations: 
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: vaultwarden.cloudstaging.cc
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                port: http
+          - path: /notifications/hub/negotiate
+            pathType: Prefix
+            backend:
+              service:
+                port: http
+          - path: /notifications/hub
+            pathType: Prefix
+            backend:
+              service:
+                port: 3012
+    tls:
+    - hosts:
+        - vaultwarden.cloudstaging.cc
+      secretName: vaultwarden-tls
+
+persistence:
+  config:
+    enabled: true
