@@ -11,16 +11,24 @@ spec:
           url: https://argoproj.github.io/argo-helm
           chart: argo-cd
           targetRevision: 5.51.6
+          sync-wave: 1
         - appName: vaultwarden
           namespace: default
           url: https://k8s-at-home.com/charts/
           chart: vaultwarden
           targetRevision: 5.3.2
+          sync-wave: 2
+        - appName: nextcloud
+          namespace: default
+          url: https://nextcloud.github.io/helm/
+          chart: nextcloud
+          targetRevision: 5.3.2
+          sync-wave: 3
   template:
     metadata:
       name: "{{appName}}"
       annotations:
-        argocd.argoproj.io/manifest-generate-paths: ".;.."
+        argocd.argoproj.io/sync-wave: "{{sync-wave}}"
     spec:
       project: default
       sources:
